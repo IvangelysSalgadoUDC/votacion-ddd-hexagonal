@@ -1,5 +1,11 @@
 <?php
 
+
+require_once __DIR__ . '/../Ports/In/CreateVotacionUseCase.php';
+require_once __DIR__ . '/../Ports/Out/SaveVotacionPort.php';
+require_once __DIR__ . '/../DTO/CreateVotacionCommand.php';
+require_once __DIR__ . '/../../Domain/Models/Votacion.php';
+
 class CreateVotacionService implements CreateVotacionUseCase
 {
     private SaveVotacionPort $savePort;
