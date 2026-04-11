@@ -38,6 +38,20 @@ switch ($route) {
         $controller->list();
         break;
 
+    case 'edit':
+    $controller->edit();
+    break;
+
+     case 'update':
+    $controller->update();
+    break;
+
+     case 'delete':
+    $controller->delete();
+    break;
+
     default:
         echo "Ruta no encontrada";
+
+        
 }

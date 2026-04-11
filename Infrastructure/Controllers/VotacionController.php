@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../../Application/DTO/CreateVotacionCommand.php';
+require_once __DIR__ . '/../../Application/DTO/GetAllVotacionesQuery.php';
 require_once __DIR__ . '/../../Application/UseCases/CreateVotacionService.php';
 require_once __DIR__ . '/../../Application/UseCases/GetAllVotacionesService.php';
 require_once __DIR__ . '/../../Infrastructure/Repositories/VotacionRepositoryMySQL.php';
@@ -44,5 +45,37 @@ class VotacionController
         $votaciones = $service->execute(new GetAllVotacionesQuery());
 
         require_once __DIR__ . '/../../views/list.php';
+    }
+
+    //  ELIMINAR
+    public function delete()
+    {
+        $id = $_GET['id'];
+
+        $repository = new VotacionRepositoryMySQL();
+        $repository->delete($id);
+
+        header("Location: index.php?route=list");
+    }
+
+    // EDITAR (CARGA FORMULARIO)
+    public function edit()
+    {
+        $id = $_GET['id'];
+
+        $repository = new VotacionRepositoryMySQL();
+        $votacion = $repository->findById($id);
+
+        require_once __DIR__ . '/../../views/edit.php';
+    }
+
+    //  ACTUALIZAR
+    public function update()
+    {
+        $repository = new VotacionRepositoryMySQL();
+
+        $repository->update($_POST);
+
+        header("Location: index.php?route=list");
     }
 }
