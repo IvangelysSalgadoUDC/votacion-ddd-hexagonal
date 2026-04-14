@@ -26,4 +26,14 @@ class UsuarioRepositoryMySQL
             password_hash($password, PASSWORD_BCRYPT)
         ]);
     }
+
+    public function updatePassword($email, $newPassword)
+{
+    $stmt = $this->conn->prepare("UPDATE usuarios SET password = ? WHERE email = ?");
+    $stmt->execute([
+        password_hash($newPassword, PASSWORD_BCRYPT),
+        $email
+    ]);
+}
+
 }

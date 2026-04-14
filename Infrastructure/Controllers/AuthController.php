@@ -51,4 +51,22 @@ public function logout()
     header("Location: index.php?route=showLogin");
 }
 
+public function recover()
+{
+    require_once __DIR__ . '/../../Application/DTO/RecoverPasswordCommand.php';
+    require_once __DIR__ . '/../../Application/UseCases/RecoverPasswordService.php';
+
+    $command = new RecoverPasswordCommand($_POST['email']);
+    $service = new RecoverPasswordService();
+
+    try {
+        $newPassword = $service->execute($command);
+
+        echo "Nueva contraseña: " . $newPassword;
+
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+}
+
 }

@@ -14,6 +14,8 @@
     <button type="submit">Ingresar</button>
     <br><br>
     <a href="index.php?route=showRegister">Registrarse</a>
+    <br><br>
+<a href="index.php?route=showRecover">¿Olvidaste tu contraseña?</a>
 </form>
 
 </body>

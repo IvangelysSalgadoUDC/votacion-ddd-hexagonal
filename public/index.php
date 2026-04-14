@@ -30,9 +30,17 @@ $auth = new AuthController();
 
 $route = $_GET['route'] ?? 'showLogin';
 
-if (!isset($_SESSION['user']) && $route != 'showLogin' && $route != 'login' && $route != 'showRegister' && $route != 'register') {
-    header("Location: index.php?route=showLogin");
-    exit;
+if (
+    !isset($_SESSION['user']) &&
+    $route != 'showLogin' &&
+    $route != 'login' &&
+    $route != 'showRegister' &&
+    $route != 'register' &&
+    $route != 'showRecover' &&
+    $route != 'recover'
+) {
+    header("Location: /votacion-app/public/index.php?route=showLogin");
+    exit();
 }
 
 switch ($route) {
@@ -78,6 +86,14 @@ case 'login':
 
     case 'logout':
     $auth->logout();
+    break;
+
+    case 'recover':
+    $auth->recover();
+    break;
+
+    case 'showRecover':
+    require_once __DIR__ . '/../views/recover.php';
     break;
 
     default:
