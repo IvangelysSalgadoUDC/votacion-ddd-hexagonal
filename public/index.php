@@ -6,6 +6,7 @@ require_once __DIR__ . '/../Application/Ports/In/GetAllVotacionesUseCase.php';
 require_once __DIR__ . '/../Application/Ports/Out/SaveVotacionPort.php';
 require_once __DIR__ . '/../Application/Ports/Out/GetAllVotacionesPort.php';
 
+
 // 2. MODELO
 require_once __DIR__ . '/../Domain/Models/Votacion.php';
 
@@ -20,8 +21,10 @@ require_once __DIR__ . '/../Application/UseCases/GetAllVotacionesService.php';
 // 5. INFRAESTRUCTURA
 require_once __DIR__ . '/../Infrastructure/Repositories/VotacionRepositoryMySQL.php';
 require_once __DIR__ . '/../Infrastructure/Controllers/VotacionController.php';
+require_once __DIR__ . '/../Infrastructure/Controllers/AuthController.php';
 
 $controller = new VotacionController();
+$auth = new AuthController();
 
 $route = $_GET['route'] ?? 'create';
 
@@ -48,6 +51,14 @@ switch ($route) {
 
      case 'delete':
     $controller->delete();
+    break;
+
+    case 'showLogin':
+    $auth->showLogin();
+    break;
+
+case 'login':
+    $auth->login();
     break;
 
     default:
