@@ -1,7 +1,6 @@
 <?php
 
 session_start();
-var_dump($_SESSION);
 
 // 1. INTERFACES (PRIMERO)
 require_once __DIR__ . '/../Application/Ports/In/CreateVotacionUseCase.php';

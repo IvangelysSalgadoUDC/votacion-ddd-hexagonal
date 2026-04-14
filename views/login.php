@@ -12,6 +12,8 @@
     Contraseña: <input type="password" name="password" required><br><br>
 
     <button type="submit">Ingresar</button>
+    <br><br>
+    <a href="index.php?route=showRegister">Registrarse</a>
 </form>
 
 </body>
