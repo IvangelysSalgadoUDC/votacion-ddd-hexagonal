@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 // 1. INTERFACES (PRIMERO)
 require_once __DIR__ . '/../Application/Ports/In/CreateVotacionUseCase.php';
 require_once __DIR__ . '/../Application/Ports/In/GetAllVotacionesUseCase.php';
@@ -26,7 +28,12 @@ require_once __DIR__ . '/../Infrastructure/Controllers/AuthController.php';
 $controller = new VotacionController();
 $auth = new AuthController();
 
-$route = $_GET['route'] ?? 'create';
+$route = $_GET['route'] ?? 'showLogin';
+
+if (!isset($_SESSION['user']) && $route != 'showLogin' && $route != 'login' && $route != 'showRegister' && $route != 'register') {
+    header("Location: index.php?route=showLogin");
+    exit;
+}
 
 switch ($route) {
     case 'create':
