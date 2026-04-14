@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+var_dump($_SESSION);
 
 // 1. INTERFACES (PRIMERO)
 require_once __DIR__ . '/../Application/Ports/In/CreateVotacionUseCase.php';
@@ -74,6 +75,10 @@ case 'login':
 
     case 'showRegister':
     require_once __DIR__ . '/../views/register.php';
+    break;
+
+    case 'logout':
+    $auth->logout();
     break;
 
     default:
