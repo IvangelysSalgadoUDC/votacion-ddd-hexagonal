@@ -31,4 +31,16 @@ class AuthController
             echo $e->getMessage();
         }
     }
+
+
+    public function register()
+{
+    require_once __DIR__ . '/../Repositories/UsuarioRepositoryMySQL.php';
+
+    $repo = new UsuarioRepositoryMySQL();
+
+    $repo->save($_POST['email'], $_POST['password']);
+
+    echo "Usuario creado correctamente";
+}
 }

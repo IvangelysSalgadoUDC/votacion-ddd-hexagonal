@@ -61,6 +61,14 @@ case 'login':
     $auth->login();
     break;
 
+    case 'register':
+    $auth->register();
+    break;
+
+    case 'showRegister':
+    require_once __DIR__ . '/../views/register.php';
+    break;
+
     default:
         echo "Ruta no encontrada";
 
