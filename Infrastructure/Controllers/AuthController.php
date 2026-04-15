@@ -46,11 +46,34 @@ class AuthController
 
     public function register()
 {
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    // VALIDACIONES
+    if (empty($email) || empty($password)) {
+        echo "Todos los campos son obligatorios";
+        return;
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo "Email inválido";
+        return;
+    }
+
     require_once __DIR__ . '/../Repositories/UsuarioRepositoryMySQL.php';
 
     $repo = new UsuarioRepositoryMySQL();
 
-    $repo->save($_POST['email'], $_POST['password']);
+    
+    $user = $repo->findByEmail($email);
+
+    if ($user) {
+        echo "El usuario ya existe";
+        return;
+    }
+
+    // Guarda usuario
+    $repo->save($email, $password);
 
     echo "Usuario creado correctamente";
 }
