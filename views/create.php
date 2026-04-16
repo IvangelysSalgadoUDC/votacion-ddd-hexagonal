@@ -1,3 +1,13 @@
+<h2>Crear Votación</h2>
+
+<hr>
+
+<a href="index.php?route=list">🏠 Inicio</a> |
+<a href="index.php?route=list">⬅ Volver</a> |
+<a href="index.php?route=logout">🚪 Cerrar sesión</a>
+
+<hr><br>
+
 <!DOCTYPE html>
 <html>
 <head>

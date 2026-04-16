@@ -1,7 +1,4 @@
 <?php
-
-require_once __DIR__ . '/../../config/database.php';
-
 class UsuarioRepositoryMySQL
 {
     private $conn;
@@ -28,12 +25,11 @@ class UsuarioRepositoryMySQL
     }
 
     public function updatePassword($email, $newPassword)
-{
-    $stmt = $this->conn->prepare("UPDATE usuarios SET password = ? WHERE email = ?");
-    $stmt->execute([
-        password_hash($newPassword, PASSWORD_BCRYPT),
-        $email
-    ]);
-}
-
+    {
+        $stmt = $this->conn->prepare("UPDATE usuarios SET password = ? WHERE email = ?");
+        $stmt->execute([
+            password_hash($newPassword, PASSWORD_BCRYPT),
+            $email
+        ]);
+    }
 }

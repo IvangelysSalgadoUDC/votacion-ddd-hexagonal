@@ -2,105 +2,121 @@
 
 require_once __DIR__ . '/../../Application/DTO/LoginUserCommand.php';
 require_once __DIR__ . '/../../Application/UseCases/LoginUserService.php';
+require_once __DIR__ . '/../Repositories/UsuarioRepositoryMySQL.php';
 
 class AuthController
 {
+    // Mostrar login
     public function showLogin()
     {
         require_once __DIR__ . '/../../views/login.php';
     }
 
+    // Iniciar sesión
     public function login()
-{
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
+    {
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
 
-    //  VALIDACIONES
-    if (empty($email) || empty($password)) {
-        echo "Todos los campos son obligatorios";
-        return;
+        // VALIDACIONES
+        if (empty($email) || empty($password)) {
+            echo "Todos los campos son obligatorios";
+            return;
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "Email inválido";
+            return;
+        }
+
+        $command = new LoginUserCommand($email, $password);
+        $service = new LoginUserService();
+
+        try {
+            $user = $service->execute($command);
+
+            session_start();
+            $_SESSION['user'] = $user['email'];
+
+            header("Location: index.php?route=list");
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "Email inválido";
-        return;
-    }
-
-    require_once __DIR__ . '/../../Application/DTO/LoginUserCommand.php';
-    require_once __DIR__ . '/../../Application/UseCases/LoginUserService.php';
-
-    $command = new LoginUserCommand($email, $password);
-    $service = new LoginUserService();
-
-    try {
-        $service->execute($command);
-
-        $_SESSION['user'] = $email;
-
-        header("Location: index.php?route=list");
-    } catch (Exception $e) {
-        echo $e->getMessage();
-    }
-}
-
-
+    // Registro
     public function register()
-{
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
+    {
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
 
-    // VALIDACIONES
-    if (empty($email) || empty($password)) {
-        echo "Todos los campos son obligatorios";
-        return;
+        // VALIDACIONES
+        if (empty($email) || empty($password)) {
+            echo "Todos los campos son obligatorios";
+            return;
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "Email inválido";
+            return;
+        }
+
+        $repo = new UsuarioRepositoryMySQL();
+
+        $user = $repo->findByEmail($email);
+
+        if ($user) {
+            echo "El usuario ya existe";
+            return;
+        }
+
+        $repo->save($email, $password);
+
+        echo "Usuario creado correctamente";
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "Email inválido";
-        return;
+    // Logout
+    public function logout()
+    {
+        session_start();
+        session_destroy();
+        header("Location: index.php?route=showLogin");
     }
 
-    require_once __DIR__ . '/../Repositories/UsuarioRepositoryMySQL.php';
+    // Recuperar contraseña
+    public function recover()
+    {
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $confirm = $_POST['confirm_password'] ?? '';
 
-    $repo = new UsuarioRepositoryMySQL();
+        // Validar campos
+        if (empty($email) || empty($password) || empty($confirm)) {
+            echo "Todos los campos son obligatorios";
+            return;
+        }
 
-    
-    $user = $repo->findByEmail($email);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "Email inválido";
+            return;
+        }
 
-    if ($user) {
-        echo "El usuario ya existe";
-        return;
+        if ($password !== $confirm) {
+            echo "Las contraseñas no coinciden";
+            return;
+        }
+
+        $repo = new UsuarioRepositoryMySQL();
+
+        $user = $repo->findByEmail($email);
+
+        if (!$user) {
+            echo "Usuario no encontrado";
+            return;
+        }
+
+        $repo->updatePassword($email, $password);
+
+        echo "Contraseña actualizada correctamente";
     }
-
-    // Guarda usuario
-    $repo->save($email, $password);
-
-    echo "Usuario creado correctamente";
-}
-
-public function logout()
-{
-    session_start();
-    session_destroy();
-    header("Location: index.php?route=showLogin");
-}
-
-public function recover()
-{
-    require_once __DIR__ . '/../../Application/DTO/RecoverPasswordCommand.php';
-    require_once __DIR__ . '/../../Application/UseCases/RecoverPasswordService.php';
-
-    $command = new RecoverPasswordCommand($_POST['email']);
-    $service = new RecoverPasswordService();
-
-    try {
-        $newPassword = $service->execute($command);
-
-        echo "Nueva contraseña: " . $newPassword;
-
-    } catch (Exception $e) {
-        echo $e->getMessage();
-    }
-}
-
 }
