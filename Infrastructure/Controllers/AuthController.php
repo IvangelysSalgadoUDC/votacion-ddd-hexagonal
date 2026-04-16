@@ -18,6 +18,7 @@ class AuthController
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
 
+        // VALIDACIONES
         if (empty($email) || empty($password)) {
             echo "Todos los campos son obligatorios";
             return;
@@ -49,6 +50,7 @@ class AuthController
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
 
+        // VALIDACIONES
         if (empty($email) || empty($password)) {
             echo "Todos los campos son obligatorios";
             return;
