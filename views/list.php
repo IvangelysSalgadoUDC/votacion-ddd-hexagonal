@@ -1,4 +1,11 @@
 <table border="1">
+
+<h2>Lista de Votaciones</h2>
+
+<a href="index.php?route=create"> Crear nueva votación</a>
+
+<br><br>
+
 <tr>
     <th>ID</th>
     <th>Fecha</th>
